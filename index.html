@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+    <style>
+
+        body{
+            background-color:  #242424;
+        }
+
+        *{
+            color: #DADAF5;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        table {
+            border: 0; 
+            border-collapse: separate; 
+            border-spacing: 0 5px;
+            background-color: rgba(100, 100, 100, 0.2);
+            padding: 1em 1.5em;
+            width: 100%;
+        }
+
+        thead tr th {
+            border-bottom: 1px solid rgba(255, 252, 252, 0.178); 
+            border-collapse: separate; 
+            border-spacing: 5px 5px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            padding-bottom: 0.6em;
+        } 
+
+        tbody tr#first td {
+            border-top: 3px solid #4d4d4d; 
+            border-collapse: separate;
+            border-spacing: 5px 5px;
+        }
+
+        tbody tr td {
+            padding: 0.5em;
+        }
+
+        tbody tr:hover {
+           background-color: #333339;
+           border-radius: 20px;
+           cursor: pointer;
+        }
+
+        .desc_video{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 650px;
+        }
+
+        .thumb_video{
+            border-radius: 6px;
+            width: 50px;
+        }
+
+        .container{
+            padding: 1em;
+        }
+        .musica-ativa td{
+            color: #ff5733 !important;
+            font-weight: bold;
+        }
+        .div-progressbar{
+            width: 100%;
+        }
+        .div-progressbar{
+            background-color: rgba(100, 100, 100, 0.2);
+            padding: 0.5em;
+            right: 0;
+            position: absolute;
+        }
+        .progressbarr{
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
+    <body>
+        <div class="container">
+            <label>Escolha sua musica Preferida! </label><br/>
+            <input class="pesquisaMusica" value="anitta ipanema" name="musica"/>
+            <a class="btn">Enviar</a>
+        </div>
+        <div class="container">
+            <table class="tabela-result">
+                <thead>
+                <tr>
+                    <th>THUMB</th>
+                    <th ></th>
+                    <th>AÇÔES</th>
+                </tr>
+                </thead>
+                <tbody class="resultados">
+                    <tr class="coluna_musica"><td>Thumb Indsp.</td><td>Tenho Medo - Zé Vaqueiro (Vídeo Oficial)</td><td>LETRA: (Dj Ivis) Me dá um tempo pra pensar Tenho que criar coragem pra me arriscar Por favor entenda o que estou passando Só tô pedindo um tempo, não to ...</td><td><a class="btn_play" onclick="tocaMusica(&quot;https://www.youtube.com/embed/dgn0egjhDJs&quot;)"><i class="fas fa-play"></i> <i class="fas fa-plus"></i></a></td></tr>
+                </tbody>
+            </table> 
+        </div>
+        <div class="div-player">
+            <iframe class="player-musica" width="400" height="220"
+            src="https://www.youtube.com/embed/4PssBppUr6w"
+            allow='autoplay'
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+            </iframe>
+        </div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+
+        // $( ".btn" ).click(function() {
+        //     $.ajax({
+        //         method: "POST",
+        //         url: "api",
+        //         data: { musica: $(".pesquisaMusica").val()}
+        //     })
+        //     .done(function( retorno ) {
+                
+        //         var html = "";
+        //         var i = 0;
+
+        //         while (i < 4) {
+                   
+        //             html += "<tr onclick='tocaMusica(\""+ retorno.url[i] +"\", \""+ retorno.id[i] +"\")' class='coluna_musica id_"+ retorno.id[i]+"'>";
+        //             html += "<td><img class='thumb_video' src='"+ retorno.thumb[i] +"'/></td>";
+        //             html += "<td>"+ retorno.titulo[i] +"</td>";
+        //             html += "<td style='text-align:center;'><a><i class='fas fa-plus'></i></a></td>";
+        //             html += "</tr>";
+
+        //             i++;
+        //         }
+
+        //         $(".resultados").html("")
+        //         $(".resultados").append(html)
+
+        //         console.log(i);
+        //     });
+        // });
+        $( document ).ready(function() {
+            $.ajax({
+                method: "POST",
+                url: "api",
+                data: { musica: $(".pesquisaMusica").val()}
+            })
+            .done(function( retorno ) {
+                
+                var html = "";
+                var i = 0;
+
+                while (i < 4) {
+                   
+                    html += "<tr onclick='tocaMusica(\""+ retorno.url[i] +"\", \""+ retorno.id[i] +"\")' class='coluna_musica id_"+ retorno.id[i]+"'>";
+                    html += "<td><img class='thumb_video' src='"+ retorno.thumb[i] +"'/></td>";
+                    html += "<td>"+ retorno.titulo[i] +"</td>";
+                    html += "<td>"+ retorno.data[i] +"</td>";
+                    html += "<td style='text-align:center;'><a><i class='fas fa-plus'></i></a></td>";
+                    html += "</tr>";
+
+                    i++;
+                }
+
+                $(".resultados").html("")
+                $(".resultados").append(html)
+
+                console.log(i);
+            });
+        });
+
+        function tocaMusica(url_musica, id){
+
+            $(".player-musica").attr("src", url_musica+"?autoplay=1");
+            $(".player-musica").trigger('play');
+            $(".coluna_musica").removeClass("musica-ativa")
+            $(".id_"+id).toggleClass("musica-ativa")
+
+        }
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '360',
+            width: '640',
+            videoId: 'M7lc1UVf-VE',
+            events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+            }
+        });
+        }
+        
+    </script>
+</html>
